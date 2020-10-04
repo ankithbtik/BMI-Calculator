@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:i_am_rich/CalculatorBrain.dart';
@@ -21,6 +23,7 @@ class _InputPageState extends State<InputPage> {
   int heightInch = 0;
   int weight = 50;
   int age = 20;
+  Timer timer;
 
   @override
   Widget build(BuildContext context) {
@@ -142,10 +145,6 @@ class _InputPageState extends State<InputPage> {
                     cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.font,
-                          size: 5.0,
-                        ),
                         Text(
                           'WEIGHT',
                           style: kLabelTextStyle,
@@ -166,6 +165,22 @@ class _InputPageState extends State<InputPage> {
                                   });
                                 }
                               },
+                              onLongPress: () {
+                                timer = Timer.periodic(
+                                    Duration(
+                                        milliseconds:
+                                            longPressDurationInMilliSeconds),
+                                    (timer) {
+                                  if (this.weight > 1) {
+                                    setState(() {
+                                      this.weight--;
+                                    });
+                                  }
+                                });
+                              },
+                              onLongPressEnd: (LongPressEndDetails details) {
+                                timer.cancel();
+                              },
                             ),
                             SizedBox(
                               width: 15.0,
@@ -178,6 +193,22 @@ class _InputPageState extends State<InputPage> {
                                     this.weight++;
                                   });
                                 }
+                              },
+                              onLongPress: () {
+                                timer = Timer.periodic(
+                                    Duration(
+                                        milliseconds:
+                                            longPressDurationInMilliSeconds),
+                                    (timer) {
+                                  if (this.weight < 999) {
+                                    setState(() {
+                                      this.weight++;
+                                    });
+                                  }
+                                });
+                              },
+                              onLongPressEnd: (LongPressEndDetails details) {
+                                timer.cancel();
                               },
                             ),
                           ],
@@ -212,6 +243,22 @@ class _InputPageState extends State<InputPage> {
                                   });
                                 }
                               },
+                              onLongPress: () {
+                                timer = Timer.periodic(
+                                    Duration(
+                                        milliseconds:
+                                            longPressDurationInMilliSeconds),
+                                    (timer) {
+                                  if (this.age > 1) {
+                                    setState(() {
+                                      this.age--;
+                                    });
+                                  }
+                                });
+                              },
+                              onLongPressEnd: (LongPressEndDetails details) {
+                                timer.cancel();
+                              },
                             ),
                             SizedBox(
                               width: 15.0,
@@ -224,6 +271,22 @@ class _InputPageState extends State<InputPage> {
                                     this.age++;
                                   });
                                 }
+                              },
+                              onLongPress: () {
+                                timer = Timer.periodic(
+                                    Duration(
+                                        milliseconds:
+                                            longPressDurationInMilliSeconds),
+                                    (timer) {
+                                  if (this.age < 149) {
+                                    setState(() {
+                                      this.age++;
+                                    });
+                                  }
+                                });
+                              },
+                              onLongPressEnd: (LongPressEndDetails details) {
+                                timer.cancel();
                               },
                             ),
                           ],
@@ -272,22 +335,33 @@ class _InputPageState extends State<InputPage> {
 }
 
 class RoundIconButton extends StatelessWidget {
-  RoundIconButton({this.iconData, @required this.onClickFunction});
+  RoundIconButton(
+      {this.iconData,
+      @required this.onClickFunction,
+      this.onLongPress,
+      this.onLongPressEnd});
 
   final IconData iconData;
   final Function onClickFunction;
+  final Function onLongPress;
+  final Function onLongPressEnd;
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(iconData),
-      onPressed: onClickFunction,
-      fillColor: Color(0xFF4C4F5E),
-      shape: CircleBorder(),
-      elevation: 0.0,
-      constraints: BoxConstraints.tightFor(
-        width: 50.0,
-        height: 50.0,
+    return GestureDetector(
+      onTap: onClickFunction,
+      onLongPress: onLongPress,
+      onLongPressEnd: onLongPressEnd,
+      child: RawMaterialButton(
+        child: Icon(iconData),
+        //onPressed: onClickFunction,
+        fillColor: Color(0xFF4C4F5E),
+        shape: CircleBorder(),
+        elevation: 0.0,
+        constraints: BoxConstraints.tightFor(
+          width: 50.0,
+          height: 50.0,
+        ),
       ),
     );
   }

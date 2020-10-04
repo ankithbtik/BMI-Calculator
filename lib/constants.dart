@@ -8,6 +8,7 @@ const kSliderThumbColor = Color(0xFFEB1555);
 const kSliderOverlayColor = Color(0x29EB1555);
 const kSliderActiveColor = Colors.white;
 const kSliderInactiveColor = Color(0xFF8D8E98);
+const int longPressDurationInMilliSeconds = 150;
 
 const kLabelTextStyle = TextStyle(
   fontSize: 18.0,
